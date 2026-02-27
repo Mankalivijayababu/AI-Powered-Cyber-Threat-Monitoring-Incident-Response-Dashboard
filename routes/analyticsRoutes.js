@@ -8,7 +8,8 @@ const Alert = require("../models/Alert");
 // ===============================
 router.get("/map", async (req, res) => {
   try {
-    const alerts = await Alert.find({ status: "open" }).sort({ createdAt: -1 }).limit(50);
+
+    const alerts = await Alert.find().limit(100);
 
     const mapData = alerts.map(alert => ({
       ip: alert.ip,
@@ -21,6 +22,7 @@ router.get("/map", async (req, res) => {
     }));
 
     res.json(mapData);
+
   } catch (err) {
     console.error("Map analytics error:", err);
     res.status(500).json({ error: "Map data failed" });
@@ -33,6 +35,7 @@ router.get("/map", async (req, res) => {
 // ===============================
 router.get("/timeline", async (req, res) => {
   try {
+
     const timeline = await Alert.aggregate([
       {
         $group: {
@@ -46,7 +49,9 @@ router.get("/timeline", async (req, res) => {
     ]);
 
     res.json(timeline);
+
   } catch (err) {
+    console.error("Timeline analytics error:", err);
     res.status(500).json({ error: "Timeline failed" });
   }
 });
@@ -57,6 +62,7 @@ router.get("/timeline", async (req, res) => {
 // ===============================
 router.get("/ips", async (req, res) => {
   try {
+
     const ips = await Alert.aggregate([
       {
         $group: {
@@ -69,7 +75,9 @@ router.get("/ips", async (req, res) => {
     ]);
 
     res.json(ips);
+
   } catch (err) {
+    console.error("IP analytics error:", err);
     res.status(500).json({ error: "IP analytics failed" });
   }
 });
