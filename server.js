@@ -31,10 +31,17 @@ const server = http.createServer(app);
 // ======================
 // GLOBAL MIDDLEWARE
 // ======================
-app.use(cors({
-  origin: "http://localhost:5173",
-  credentials: true
-}));
+const cors = require("cors");
+
+app.use(
+  cors({
+    origin: [
+      "http://localhost:5173",
+      "https://ai-powered-cyber-threat-monitoring.vercel.app"
+    ],
+    credentials: true,
+  })
+);
 
 app.use(express.json());
 
