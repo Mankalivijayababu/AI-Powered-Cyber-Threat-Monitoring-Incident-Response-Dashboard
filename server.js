@@ -29,6 +29,14 @@ const app = express();
 const server = http.createServer(app);
 
 // ======================
+// DEBUG API LOGGER
+// ======================
+app.use((req, res, next) => {
+  console.log(`📡 ${req.method} ${req.url}`);
+  next();
+});
+
+// ======================
 // GLOBAL MIDDLEWARE
 // ======================
 app.use(
@@ -42,7 +50,7 @@ app.use(
   })
 );
 
-app.use(express.json());
+app.use(express.json({ limit: "10mb" }));
 
 // ======================
 // SOCKET.IO CONFIG
@@ -58,7 +66,6 @@ const io = new Server(server, {
   }
 });
 
-// make io available inside routes
 app.set("io", io);
 
 // ======================
